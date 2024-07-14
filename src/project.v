@@ -22,6 +22,41 @@ module tt_um_aschrein_asic_0 (
   assign uio_oe  = 0;
 
   // List all unused inputs to prevent warnings
-  wire _unused = &{ena, clk, rst_n, 1'b0};
+  // wire _unused = &{ena, clk, rst_n, 1'b0};
+
+  reg [7:0] reg_file [0:15];
+  
+  reg [3:0] reg_dst;
+  reg [7:0] state;
+
+  localparam STATE_IDLE         = 0;
+  localparam STATE_SET_REG_NEXT = 1;
+
+  localparam MOV_REG_IMM = 4'b0001;
+
+  always @(posedge clk or negedge rst_n) begin
+    if (~rst_n) begin
+      
+    end else begin
+
+      case (state)
+        STATE_IDLE: begin
+          case (ui_in[3:0])
+              MOV_REG_IMM: begin
+            // reg_file[reg_dst] <= ui_in[7:4];
+              reg_dst <= ui_in[7:4];
+              state <= STATE_SET_REG_NEXT;
+              end
+          endcase
+        end
+        STATE_SET_REG_NEXT: begin
+          reg_file[reg_dst][7:0] <= ui_in[7:0];
+          state <= STATE_IDLE;
+        end
+      endcase
+
+      // Your logic here
+    end
+  end
 
 endmodule
