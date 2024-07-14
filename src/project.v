@@ -28,11 +28,14 @@ module tt_um_aschrein_asic_0 (
   
   reg [3:0] reg_dst;
   reg [7:0] state;
+  reg [7:0] reg_io;
 
   localparam STATE_IDLE         = 0;
   localparam STATE_SET_REG_NEXT = 1;
 
-  localparam MOV_REG_IMM = 4'b0001;
+  localparam MOV_REG_IMM  = 4'd1;
+  localparam GET_REG      = 4'd2;
+  localparam ACC_REG = 4'd3;
 
   always @(posedge clk or negedge rst_n) begin
     if (~rst_n) begin
@@ -47,6 +50,12 @@ module tt_um_aschrein_asic_0 (
               reg_dst <= ui_in[7:4];
               state <= STATE_SET_REG_NEXT;
               end
+              GET_REG: begin
+                reg_io <= reg_file[ui_in[7:4]];
+              end
+              ACC_REG: begin
+                reg_file[ui_in[3:0]] <= reg_file[ui_in[7:4]] + reg_file[ui_in[3:0]];
+              end
           endcase
         end
         STATE_SET_REG_NEXT: begin
@@ -58,5 +67,7 @@ module tt_um_aschrein_asic_0 (
       // Your logic here
     end
   end
+
+  assign uio_out = reg_io[7:0]; 
 
 endmodule
