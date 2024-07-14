@@ -27,7 +27,7 @@ module tt_um_aschrein_asic_0 (
   reg [7:0] reg_file [0:15];
   
   reg [3:0] reg_dst;
-  reg [7:0] state;
+  reg [3:0] state;
   reg [7:0] reg_io;
 
   localparam STATE_IDLE         = 4'd0;
@@ -46,7 +46,7 @@ module tt_um_aschrein_asic_0 (
         STATE_IDLE: begin
           case (ui_in[3:0])
               MOV_REG_IMM: begin
-            // reg_file[reg_dst] <= ui_in[7:4];
+              // reg_file[reg_dst] <= ui_in[7:4];
               reg_dst <= ui_in[7:4];
               state <= STATE_SET_REG_NEXT;
               end
