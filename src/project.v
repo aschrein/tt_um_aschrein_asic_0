@@ -15,17 +15,17 @@ module tt_um_aschrein_asic_0 (
     input  wire       clk,      // clock
     input  wire       rst_n     // reset_n - low to reset
 );
-  reg [7:0] reg_file[0:15];
+  reg [7:0] reg_file[0:7];
   reg [3:0] reg_dst;
   reg [3:0] state;
   reg [7:0] reg_io;
 
-  localparam STATE_IDLE = 4'd0;
+  localparam STATE_IDLE         = 4'd0;
   localparam STATE_SET_REG_NEXT = 4'd1;
 
-  localparam MOV_REG_IMM = 4'd1;
-  localparam GET_REG = 4'd2;
-  localparam ACC_REG = 4'd3;
+  localparam MOV_REG_IMM  = 4'd1;
+  localparam GET_REG      = 4'd2;
+  localparam ACC_REG      = 4'd3;
 
   always @(posedge clk or negedge rst_n) begin
     if (~rst_n) begin
